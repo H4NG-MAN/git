@@ -1091,9 +1091,9 @@ static inline int strtol_i(char const *s, int base, int *result)
 	return 0;
 }
 
-#ifdef INTERNAL_QSORT
 void git_qsort(void *base, size_t nmemb, size_t size,
 	       int(*compar)(const void *, const void *));
+#ifdef INTERNAL_QSORT
 #define qsort git_qsort
 #endif
 
@@ -1104,6 +1104,8 @@ static inline void sane_qsort(void *base, size_t nmemb, size_t size,
 	if (nmemb > 1)
 		qsort(base, nmemb, size, compar);
 }
+
+#define QSORT_STABLE(base, n, compar) git_qsort((base), (n), sizeof(*(base)), compar)
 
 #ifndef HAVE_ISO_QSORT_S
 int git_qsort_s(void *base, size_t nmemb, size_t size,
